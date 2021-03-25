@@ -74,11 +74,11 @@ public class LoginStepDef {
 	    
 	}
 	
-	/*@After
+	@After
 	public void tearDown()
 	{
 		login.driver.close();
-	}*/
+	}
 
 
 
