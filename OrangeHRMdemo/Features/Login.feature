@@ -4,7 +4,7 @@ Feature: To test Login Page of an orangeHRM application
 Background: The purpose of this feature is to test the Background keyword
 Given User is on login page
 
-@login
+#@login
 Scenario Outline: To test login feature with invalid username and password
 When user enter the "<username>" and "<password>"
 Then user click on login button
@@ -23,7 +23,7 @@ Examples:
 |Apple|apple123|
 |||
 
-#@login
+@login
 Scenario Outline: To test login feature with valid username and password
 When user enter the "<username>" and "<password>"
 Then user click on login button

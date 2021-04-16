@@ -12,20 +12,19 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.interactions.Actions;
 
-
+import com.cg.exception.BrowserIncompatableException;
 
 public class TestBase {
-	
+
 	public static WebDriver driver;
-	Properties prop;
+	public static Properties prop;
 	protected Actions action;
-	
-	
+
 	public TestBase()
 	{
 		prop = new Properties();
 		try {
-			prop.load(new FileInputStream("config\\config.properties"));
+			prop.load(new FileInputStream("Config\\config.properties"));
 			String browser = prop.getProperty("browser");
 			if(browser.equalsIgnoreCase("CHROME"))
 			{
@@ -37,14 +36,30 @@ public class TestBase {
 				System.setProperty("webdriver.gecko.driver","drivers\\geckodriver\\geckodriver.exe" );
 				driver = new FirefoxDriver();
 			}
-			
+			else
+			{
+				throw new BrowserIncompatableException("Browser is not supported for the application");
+
+			}
+
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
+		}catch (BrowserIncompatableException e) {
+			e.printStackTrace();
 		}
+
+
 	}
-	
+
+	public static String getReportConfigPath(){
+		String reportConfigPath = prop.getProperty("reportConfigPath");
+		if(reportConfigPath!= null) return reportConfigPath;
+		else throw new RuntimeException("Report Config Path not specified in the Configuration.properties file for the Key:reportConfigPath"); 
+	}
+
+
 	@BeforeClass
 	public void init()
 	{
@@ -52,8 +67,10 @@ public class TestBase {
 		driver.get(prop.getProperty("url"));
 		driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
 		action = new Actions(driver);
-		
+
 	}
 	
+	
+
 
 }
